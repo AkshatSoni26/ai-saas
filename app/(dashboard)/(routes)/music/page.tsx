@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Empty } from "@/components/empty";
 import { cn } from "@/lib/utils";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 
@@ -28,6 +29,7 @@ function MusicPage() {
 
     const router = useRouter()
     const [music, setMusic] = useState<string>()
+    const proModal = useProModal()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,7 +53,9 @@ function MusicPage() {
             form.reset()
 
         } catch (error: any) {
-            //TODO: Open Pro Model
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
             console.log(error)
         }
         finally {

@@ -23,14 +23,16 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/botAvatar";
 import ReactMarkdown from 'react-markdown'
 import { formSchema } from "./constants";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 
 
-function MusicPage() {
+function ImagePage() {
 
     const router = useRouter()
 
     const [images, setImages] = useState<string[]>([])
+    const proModal = useProModal()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,7 +55,9 @@ function MusicPage() {
             form.reset()
 
         } catch (error: any) {
-            //TODO: Open Pro Model
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
             console.log(error)
         }
         finally {

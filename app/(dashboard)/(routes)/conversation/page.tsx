@@ -22,6 +22,8 @@ import { Empty } from "@/components/empty";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/botAvatar";
+import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 
 
@@ -29,6 +31,7 @@ function ConversationPage() {
 
     const router = useRouter()
     const [messages, setMessages] = useState<message[]>([])
+    const proModal = useProModal()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -41,7 +44,6 @@ function ConversationPage() {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-
             const userMessage = values.prompt
             const response = await axios.post('/api/conversation', {
                 messages: userMessage
@@ -64,7 +66,12 @@ function ConversationPage() {
             form.reset()
 
         } catch (error: any) {
-            //TODO: Open Pro Model
+            if (error?.response?.status === 403) {
+                proModal.onOpen();
+            }
+            else {
+                toast.error("Something went wrong.")
+            }
             console.log(error)
         }
         finally {
