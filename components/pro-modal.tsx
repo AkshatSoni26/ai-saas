@@ -4,12 +4,12 @@ import React, { useState } from "react"
 import { Dialog, DialogHeader, DialogContent, DialogClose, DialogTitle, DialogDescription, DialogFooter } from "./ui/dialog"
 import { useProModal } from "@/hooks/use-pro-modal"
 import { Badge } from "./ui/badge"
-import { tools } from "@/app/(dashboard)/(routes)/dashboard/page"
 import { Card } from "./ui/card"
 import { cn } from "@/lib/utils"
 import { Check, Zap } from "lucide-react"
 import { Button } from "./ui/button"
 import axios from "axios"
+import { tools } from "./constants"
 
 export const ProModal = () => {
 
