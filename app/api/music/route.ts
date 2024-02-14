@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: MODEL_NAME, generationConfig: generation_config,
+        const model = genAI.getGenerativeModel({ model: MODEL_NAME || "", generationConfig: generation_config,
         safetySettings: safety_settings });
 
         const result = await model.generateContent(messages);
